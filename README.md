@@ -30,4 +30,4 @@ IncludeMelonConsole = false
 
 ### Credits
 
-Special thanks to [Knah](https://github.com/knah) for helping with IntPtr knowledge!
+Special thanks to [Knah](https://github.com/knah) for IntPtr knowledge!
