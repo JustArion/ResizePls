@@ -2,11 +2,10 @@ using System;
 using Dawn.Resize;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(Start), "ResizePls", "1.1.1", "arion#1223")]
+[assembly: MelonInfo(typeof(Start), "ResizePls", "1.0", "arion#1223")]
 [assembly: MelonGame]
 [assembly: MelonColor(ConsoleColor.White)]
 [assembly: MelonOptionalDependencies("UIExpansionKit")]
-[assembly: MelonPriority(-1)]
 namespace Dawn.Resize
 {
     using System;
@@ -26,7 +25,7 @@ namespace Dawn.Resize
             _ = Task.Run(() =>
             {
                 TryRefreshCache();
-                
+
                 foreach (var intptr in Native.CachedWindowPointers) 
                     Native.ShowWindow(intptr, (int) window);
             });
@@ -39,7 +38,7 @@ namespace Dawn.Resize
         private static void TryRefreshCache()
         {
             if (Native.CachedWindowPointers.Count >= 2) return;
-            
+
             var processPointers = Native.GetProcessWindows(Process.GetCurrentProcess().Id);
             foreach (var processPointer in processPointers)
             {
@@ -75,7 +74,7 @@ namespace Dawn.Resize
         ///     The instance of VRC will still be running and can be seen in Ctrl + Shift + Esc (Task Manager).
         /// </summary>
         private static bool AdvancedUser;
-        
+
         //Pointer is public in-case some mods need this.
         // ReSharper disable once MemberCanBePrivate.Global
 
@@ -108,16 +107,15 @@ namespace Dawn.Resize
                 ? value
                 : nShowWindow.SW_SHOWNORMAL;
         }
-        
+
         public override void OnApplicationStart()
         {
             CheckUser();
             RegisterPreferences();
-            
+
             SetWindowEnum(Enum.Value);
-            if (Enabled.Value) MelonCoroutines.Start(DelayByFrame(1, () => ShowWindow(CachedWindowEnum)));
-            
-            Enabled.OnValueChanged += (_, b1) => { ShowWindow(b1 ? CachedWindowEnum : nShowWindow.SW_SHOWNORMAL); };
+            if (Enabled.Value) MelonCoroutines.Start(DelayByFrame(2, () => ShowWindow(CachedWindowEnum)));
+                Enabled.OnValueChanged += (_, b1) => { ShowWindow(b1 ? CachedWindowEnum : nShowWindow.SW_SHOWNORMAL); };
             Enum.OnValueChanged += (_, s1) =>
             {
                 if (!Enabled.Value) return; 
