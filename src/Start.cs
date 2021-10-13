@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using Dawn.Resize;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(Start), "ResizePls", "1.0", "arion#1223")]
+[assembly: MelonInfo(typeof(Start), "ResizePls", "1.1", "arion#1223")]
 [assembly: MelonGame]
 [assembly: MelonColor(ConsoleColor.White)]
 [assembly: MelonOptionalDependencies("UIExpansionKit")]
+[assembly: MelonPriority(-1)]
 namespace Dawn.Resize
 {
     using System;
@@ -114,8 +115,9 @@ namespace Dawn.Resize
             RegisterPreferences();
             
             SetWindowEnum(Enum.Value);
-            if (Enabled.Value) MelonCoroutines.Start(DelayByFrame(2, () => ShowWindow(CachedWindowEnum)));
-                Enabled.OnValueChanged += (_, b1) => { ShowWindow(b1 ? CachedWindowEnum : nShowWindow.SW_SHOWNORMAL); };
+            if (Enabled.Value) ShowWindow(CachedWindowEnum);
+            
+            Enabled.OnValueChanged += (_, b1) => { ShowWindow(b1 ? CachedWindowEnum : nShowWindow.SW_SHOWNORMAL); };
             Enum.OnValueChanged += (_, s1) =>
             {
                 if (!Enabled.Value) return; 
