@@ -2,9 +2,10 @@ using System;
 using Dawn.Resize;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(Start), "ResizePls", "1.0", "arion#1223")]
+[assembly: MelonInfo(typeof(Start), "ResizePls", "1.1", "arion#1223")]
 [assembly: MelonGame]
 [assembly: MelonColor(ConsoleColor.White)]
+[assembly: MelonPriority(-1)] // Priority over XSOverlayTitleHider
 [assembly: MelonOptionalDependencies("UIExpansionKit")]
 namespace Dawn.Resize
 {
@@ -46,7 +47,7 @@ namespace Dawn.Resize
                 if (windowText.StartsWith("GDI+ Window") || windowText.Contains("IME")) continue;
                 // if (windowText == "VRChat" || windowText.StartsWith("MelonLoader")) // Inverted Search to be Universal.
 
-                if (windowText.StartsWith("MelonLoader"))
+                if (windowText.StartsWith("MelonLoader") || windowText.StartsWith("[D] MelonLoader")) // Normal & MelonLoader in DebugMode
                 {
                     if (IncludeMelonConsole.Value) 
                         Native.CachedWindowPointers.Add(processPointer);
@@ -134,11 +135,16 @@ namespace Dawn.Resize
 
         private static IEnumerator DelayByFrame(int frameDelay, Action act)
         {
-            for (int i = 0; i < frameDelay; i++)
+            if (frameDelay == 0) act();
+            else
             {
-                yield return new WaitForEndOfFrame();
+                for (int i = 0; i < frameDelay; i++)
+                {
+                    yield return new WaitForEndOfFrame();
+                }
+                act();
             }
-            act();
+            
         }
 
         /// <summary>
