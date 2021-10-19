@@ -113,6 +113,7 @@ namespace Dawn.Resize
         {
             CheckUser();
             RegisterPreferences();
+            TryRefreshCache();
 
             SetWindowEnum(Enum.Value);
             if (Enabled.Value) MelonCoroutines.Start(DelayByFrame(2, () => ShowWindow(CachedWindowEnum)));
