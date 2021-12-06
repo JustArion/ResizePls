@@ -134,12 +134,12 @@ namespace Dawn.Resize
                 ExpansionKitStart();
         }
 
-        private static IEnumerator DelayByFrame(int frameDelay, Action act)
+        private static IEnumerator DelayByFrame(uint frameDelay, Action act)
         {
             if (frameDelay == 0) act();
             else
             {
-                for (int i = 0; i < frameDelay; i++)
+                for (uint i = 0; i < frameDelay; i++)
                 {
                     yield return new WaitForEndOfFrame();
                 }
